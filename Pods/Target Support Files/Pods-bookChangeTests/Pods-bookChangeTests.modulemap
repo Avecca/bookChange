@@ -1,0 +1,6 @@
+framework module Pods_bookChangeTests {
+  umbrella header "Pods-bookChangeTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

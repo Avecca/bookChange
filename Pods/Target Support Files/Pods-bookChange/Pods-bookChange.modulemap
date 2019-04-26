@@ -1,0 +1,6 @@
+framework module Pods_bookChange {
+  umbrella header "Pods-bookChange-umbrella.h"
+
+  export *
+  module * { export * }
+}
