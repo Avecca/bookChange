@@ -23,4 +23,7 @@ class User {
     }
     
     
+    //TODO FLYTTA LOGOUT LOG IN HIT
+    
+    
 }

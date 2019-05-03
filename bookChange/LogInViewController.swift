@@ -16,7 +16,10 @@ class LogInViewController: UIViewController {
 
     
     let segueId = "segueToBookChange"
+    var date: Date!
+    let format = DateFormatter()
     var auth : Auth!
+    var db : Firestore!
     
     
     @IBOutlet weak var userNameTxtField: UITextField!
@@ -28,17 +31,15 @@ class LogInViewController: UIViewController {
      
         
          auth = Auth.auth()
+         db = Firestore.firestore()
+         format.dateFormat = "yyy-MM-dd HH:mm"
+        
+        
+        //TODO byt till name, få den att hoppa vidare med enter osv
+         emailTxtField.becomeFirstResponder()
         
         //IF autologged in from previous session
         
-//        if let usr = auth.currentUser {
-//            print(user.email)
-//            performSegue(withIdentifier: segueId, sender: self)
-//        } else {
-//            print("user null")
-//        }
-
-        // Do any additional setup after loading the view.
     }
     
     
@@ -58,13 +59,22 @@ class LogInViewController: UIViewController {
 //           performSegue(withIdentifier: segueId, sender: self)
         
         if let email = emailTxtField.text{
+            print("email är här")
             
             if let pw = passwordTxtField.text{
+                print("pw är här")
                
                 auth.signIn(withEmail: email, password: pw){
                     user, error in
-                    if let usr = self.auth.currentUser{
+                    if let user = self.auth.currentUser{
+                        print("user är här" )
                         self.performSegue(withIdentifier: self.segueId, sender: self)
+                    }else {
+                        
+                        //TODO POPUP
+                        print("ingen user")
+                        return
+                        
                     }
                     
                 }
@@ -81,19 +91,37 @@ class LogInViewController: UIViewController {
                 
                 if let pw = passwordTxtField.text{
                     
-                    
+                    print("create pow exists")
                     
 //                    auth.createUser(withEmail: email, password: pw) {
 //                        authresul
 //                    }, completion: <#T##AuthDataResultCallback?##AuthDataResultCallback?##(AuthDataResult?, Error?) -> Void#>)
 //
                     
-                    Auth.auth().createUser(withEmail: email, password: pw) {
+                    auth.createUser(withEmail: email, password: pw) {
                         authResult, error in
 
-                        if let usr = Auth.auth().currentUser {
+                        if let usr = self.auth.currentUser {
+                            let userId = usr.uid
+                            self.date = Date()
+                            let formattedDate = self.format.string(from: self.date)
+                            
+                            //todo create username, locatiobn
+                            
+                            let newUser : Dictionary<String, Any> = [
+                                "userName" : "Placeholder",
+                                "location" : "Stockholm",
+                                "created" : formattedDate
+                            ]
+                            
+                            print("Skapar user med id: " + userId)
+                            
+                            self.db.collection("users").document(userId).setData(newUser)
+        
                             self.performSegue(withIdentifier: self.segueId, sender: self)
 
+                        } else{
+                            //TODO POPUP
                         }
 
                     }
@@ -116,14 +144,16 @@ class LogInViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print("Override händer med \(Players.playerArray.count) players")
    
-        if segue.identifier == segueId{
-            let destinationVC = segue.destination as! TabOverView
-        }
+//        if segue.identifier == segueId{
+//            print("använder denna")
+//            let destinationVC = segue.destination as! TabOverView
+//        }
     
 
     }
     
     @IBAction func unwindToHere(segue: UIStoryboardSegue) {
+        //TODO Nolla text boxarna
         print("Tillbaka till Start")
         
     }
@@ -131,8 +161,6 @@ class LogInViewController: UIViewController {
     //return segue, TODO, när loggar ut
 //    @IBAction func unwindToHere(segue: UIStoryboardSegue) {
 //        // print("Tillbaka till Start")
-//        self.playerCollectionView.reloadData()
-//        playBtn.isHidden = true
 //
 //    }
     

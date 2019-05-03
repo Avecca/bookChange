@@ -10,8 +10,17 @@ import UIKit
 import Firebase
 
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-
+    
+    var books = [Book]()
+    var bids = [Bid]()
+    var bidBookInfos = [BidBookInfo]()
+    var db : Firestore!
     var auth : Auth!
+    var userId: String!
+    
+    var findByGenre: String!
+    var orderBy: String!
+    
     let segToLogIn = "unwindToLogInId"
     
     
@@ -23,7 +32,12 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        db = Firestore.firestore()
         auth = Auth.auth()
+        
+        
+        
+        self.orderBy = "timeStamp"
         
         //collectionViews elegate and datasource connection
         offersBidsView.delegate = self
@@ -31,6 +45,81 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         
         
+    }
+    
+    
+    //TODO SHOWS MY BIDS SO FAR UNder
+    override func viewWillAppear(_ animated: Bool) {
+      showMyBids()
+    }
+    
+    func showMyBids() {
+        
+        if auth.currentUser != nil {
+            
+            let user = auth.currentUser
+            let cUserId = user?.uid
+            
+            print("user id \(userId)")
+            
+             //TODO SHOWS MY BIDS SO FAR UNder
+            //let ref = db.collection("bids").whereField("offeredBookUserId", isEqualTo: self.userId)//.order(by: self.orderBy)
+            
+            //Find a bid where I have made clicked bid, thereby making an offer
+            let bidRef = db.collection("bids").whereField("offeredBookUserId", isEqualTo: cUserId)
+            print("query gjord")
+            
+            
+            
+            bidRef.addSnapshotListener() {
+                (snapShot, error) in
+                
+                
+                print("inne i listener")
+                var newBids = [Bid]()
+                print("lista av bids gjord")
+                //var newBidInfo = [BidBookInfo]()
+                
+                for document in snapShot!.documents {
+                    
+                    print("inne i snapshot : \(document.data().count)")
+                    print(document.data().description)
+                    
+                    let bid = Bid(snapshot: document)
+                    //create BidINfo?
+                    newBids.append(bid)
+                    
+                    
+                    print("förbi första")
+                    //let bidInfo = BidBookInfo(snapshot : document)
+                    
+                    //newBidInfo.append(bidInfo)
+                    
+                   // fillBidBookInfo(bid: bid)
+                }
+                
+                print("Hittat böcker till bidinfo")
+                
+                //self.bidBookInfos = newBidInfo
+                
+                //print(self.bidBookInfos.description)
+                //TODO Remove later
+                self.bids = newBids
+                print(self.bids.description)
+                
+                self.offersBidsView.reloadData()
+    
+            }
+        }
+    }
+    
+//    func fillBidBookInfo(bid : Bid) -> ([String]) {
+//        function body
+//    }
+    
+    func showMyOffers()  {
+        //TODO SHOWS MY OFFERS SO FAR UNder
+        //Kalla från switch stamenet under segment ändringar
     }
     
     @IBAction func logOutBtnPressed(_ sender: Any) {
@@ -56,7 +145,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     //CollectionView Delegates and datasource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1  //TODO .count  antalet
+        return bids.count //TODO .count  antalet
         
         
     }
@@ -71,6 +160,12 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         
         let cellIndex = indexPath.item
+        
+        cell.configCell(bid: bids[cellIndex])
+        
+        
+        //TODO
+        //cell.KNAPP.tag = cellindex
         
         return cell
     }
@@ -91,4 +186,20 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     
 }
+
+
+//guard !bids.isEmpty else {
+//    return
+//}
+//
+////FOREACH bid in bids, kanske in i for each doc in snapshot?
+//let bookBids: Dictionary <String, Any> = [
+//    "userId": String!
+//    "bookId": String!
+//    "offeredBookId": String!
+//    "offeredBookUserId": String!
+//    "timeStamp": String!
+//    "status": String!
+//
+//]
 

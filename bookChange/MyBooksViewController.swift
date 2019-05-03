@@ -17,6 +17,7 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var books = [Book]()
     var db : Firestore!
+    var auth : Auth!
     var userId: String!
     var orderBy: String!
     //var fBRef : CollectionReference//()//
@@ -25,18 +26,21 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewDidLoad()
         
         db = Firestore.firestore()
+        auth = Auth.auth()
         
         //default orderby, TODO kanske i viewwillappear
-        self.orderBy = "title"
+        self.orderBy = "authorLastName"
         
         //TODO Behövs detta
        // myBooksSegmentCtrl.addTarget(self, action: #selector(myBooksSegmentChanged.indexChanged(_:)), for: .valueChanged)
         
 
-        myBooksSegmentCtrl.addTarget(self, action: "myBooksSegmentChanged:", for:.touchUpInside)
+        //myBooksSegmentCtrl.addTarget(self, action: "myBooksSegmentChanged:", for:.touchUpInside)
         
         myBooksViewController.delegate = self
         myBooksViewController.dataSource = self
+        
+        print("inloggad påmybooks: \(auth.currentUser?.uid)")
 
 
         // Do any additional setup after loading the view.
@@ -48,17 +52,152 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     //innan sidan ladda, ladda ner spelarens böcker, eller när den reloadas, när vi komemr tilbaka till den
     override func viewWillAppear(_ animated: Bool) {
+        updateMyBooksArray()
+    }
+    
+    @IBAction func publishBtnPressed(_ sender: UIButton) {
+        print("Publish!!")
         
+        let index = sender.tag
+        
+        print(index)
+        
+        let bookId = books[index].bookId!
         
         if Auth.auth().currentUser != nil {
+         
+            //TODO dubbelkolla att userId stämmer också
+           let updateRef =  db.collection("books").document(bookId)
+                    
+            updateRef.updateData(["status" : "published"]) {
+                err in
+                if let err = err {
+                    print("Error : \(err)")
+                } else {
+                    print("book status updated w/id: " + bookId)
+                }
+            }
+        
+        }
+    }
+    
+    @IBAction func deleteBookBtnPressed(_ sender: UIButton) {
+        
+        let index = sender.tag
+        let user = auth.currentUser
+        let userId = (user?.uid)!
+        
+        print(index)
+        
+        let bookId = books[index].bookId!
+        
+        if Auth.auth().currentUser != nil {
+            
+            //TODO dubbelkolla att userUi stämmer?
+            let deleteRef =  db.collection("books").document(bookId)
+            
+            
+            deleteRef.delete() { err in
+                if let err = err {
+                    print("Error: \(err)")
+                }else{
+                    print("deleted book with ref: \(bookId)")
+                    
+                    
+                   // var deletedBookAtUserRef: DocumentReference? = nil
+                    //deletedBookAtUserRef = self.db.collection("users").document(userId).collection("books").whereField("bookId", isEqualTo: bookId)
+                   
+                    let deleteBookAtUser = self.db.collection("users").document(userId).collection("books").whereField("bookId", isEqualTo: bookId).getDocuments() { (QuerySnapshot, err) in
+                        
+                            if let erro = err {
+                                print("bookId NOT deleted from user: \(erro)")
+                            } else {
+                                for doc in QuerySnapshot!.documents {
+                                    doc.reference.delete()
+                                    print("bookId deleted from user with refId \(doc.documentID)  ")
+                                }
+                               
+                            }
+                        
+                    
+                        
+                    }
+                        
+                    //let bookIdAtUser = deleteBookAtUser
+                    
+                    //TODO hitta documentets rteferensenoch deletea med  documnetets id
+                        //.whereField("bookId", isEqualTo: bookId)
+                    
+//                    deleteRef.delete(){ err in
+//
+//                        if let erro = err {
+//                            print("bookId NOT deleted from user")
+//                        } else {
+//                            print("bookId deleted from user")
+//                        }
+//                    }
+                    
+                    
+                    self.myBooksViewController.reloadData()
+                    
+                    //TODO deletea bookref hos personen också
+                }
+            }
+
+//
+//            updateRef.updateData(["status" : "published"]) {
+//                err in
+//                if let err = err {
+//                    print("Error : \(err)")
+//                } else {
+//                    print("book status updated w/id: " + bookId)
+//                }
+//            }
+            
+        }
+    }
+    //    @IBAction func publishBtnPressed(_ sender: UIButton) {
+//
+//        print("publish tryckts!")
+//
+//        let index = sender.tag
+//
+//        let bookId = books[index].bookId!
+//
+//        if Auth.auth().currentUser != nil {
+//
+//           let updateRef =  db.collection("books").document(bookId)
+//
+//            updateRef.updateData(["status" : "published"]) {
+//                err in
+//                if let err = err {
+//                    print("Error : \(err)")
+//                } else {
+//                    print("book status updated w/id: " + bookId)
+//                }
+//            }
+//
+//        }
+//
+//    }
+    
+    func updateMyBooksArray() {
+        
+        if Auth.auth().currentUser != nil {
+            
+            
+            //TODO Ändra till users böcker genom users istället, kanske
+            
             
             print("User är inloggad!")
             // User is signed in.
             let user = Auth.auth().currentUser
-
-            self.userId = user?.uid
-            let fBRef = db.collection("books").whereField("userId", isEqualTo: self.userId).order(by: self.orderBy, descending: true)
             
+            self.userId = user?.uid
+            let fBRef = db.collection("books").whereField("userId", isEqualTo: self.userId).order(by: self.orderBy, descending: false)
+            
+            
+            //TODO STOP listener när ueryn ädras och gör ny, i mybooksSegmentchanged?
             fBRef.addSnapshotListener() {
                 (snapshot, error) in
                 
@@ -73,26 +212,28 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
                 self.myBooksViewController.reloadData()
             }
         }
-        
-
-       
-        
-        //
-
     }
     
     
     @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
+//          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
         
         
-        if sender.selectedSegmentIndex == 1 {
-            self.orderBy = "title"
-            
-        } else {
-            
+        switch myBooksSegmentCtrl.selectedSegmentIndex {
+        case 0:
             self.orderBy = "authorLastName"
-            
+        case 1:
+            self.orderBy = "title"
+        default:
+            self.orderBy = "title"
         }
+        
+        //TODO GAAAAH named sooo wrong
+        
+        print("trying to reload")
+        updateMyBooksArray()
+        
+
     }
     
     
@@ -120,6 +261,9 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         //to be able to remove
         cell.removeBookBtn.tag = cellIndex
+        cell.publishBookBtn.tag = cellIndex
+        cell.layer.borderWidth = 2
+        cell.layer.borderColor = UIColor.darkGray.cgColor
         return cell
     }
     

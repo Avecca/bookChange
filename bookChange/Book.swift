@@ -12,7 +12,7 @@ import  Firebase
 class Book {
     
     private(set) var userId: String!
-    //private(set) var bookId: String!
+    private(set) var bookId: String!
     private(set) var title: String!
     private(set) var authorFirstName: String!
     private(set) var authorLastName: String!
@@ -26,10 +26,10 @@ class Book {
     
     //place senare , TODO
     //bookId: String,
-    init(userId: String, title: String, authorFirstName: String, authorLastName: String, genre: String, description: String, timeStamp: String, status: String ) {
+    init(userId: String, bookId: String, title: String, authorFirstName: String, authorLastName: String, genre: String, description: String, timeStamp: String, status: String ) {
         
         self.userId = userId
-        //self.bookId = bookId
+        self.bookId = bookId
         self.title = title
         self.authorFirstName = authorFirstName
         self.authorLastName = authorLastName
@@ -45,6 +45,7 @@ class Book {
         let sSValue = snapshot.data() as [String: Any]
         
         userId = sSValue["userId"] as! String
+        bookId = snapshot.documentID
         title = sSValue["title"] as! String
         authorFirstName = sSValue["authorFirstName"] as! String
         authorLastName = sSValue["authorLastName"] as! String
@@ -55,6 +56,26 @@ class Book {
         //TODO formatera strängen till bara yyy-MM-dd
         timeStamp = sSValue["timeStamp"] as! String
         status = sSValue["status"] as! String
+        
+        
+        
+        
+    }
+    init(snapshot:  [String: Any], docId : String ) {
+        //let sSValue = snapshot.data() as [String: Any]
+        
+        userId = snapshot["userId"] as! String
+        bookId = docId
+        title = snapshot["title"] as! String
+        authorFirstName = snapshot["authorFirstName"] as! String
+        authorLastName = snapshot["authorLastName"] as! String
+        genre = snapshot["genre"] as! String
+        description = snapshot["description"] as! String
+        meetingAdress = snapshot["meetingAdress"] as! String
+        
+        //TODO formatera strängen till bara yyy-MM-dd
+        timeStamp = snapshot["timeStamp"] as! String
+        status = snapshot["status"] as! String
         
         
         
