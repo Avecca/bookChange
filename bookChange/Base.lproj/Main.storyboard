@@ -162,11 +162,15 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="acceptBtn" destination="7cS-ws-Sqi" id="2x0-97-hZR"/>
-                                            <outlet property="bidAuthor" destination="y2R-qt-ecC" id="9t9-xP-UPh"/>
+                                            <outlet property="bidAuthor" destination="Gas-FX-fPO" id="oA5-cT-8a5"/>
+                                            <outlet property="bidLabel" destination="vaa-nH-ROg" id="veO-hU-zzp"/>
                                             <outlet property="bidTitle" destination="9Fa-NT-oLH" id="hST-7e-jJ4"/>
+                                            <outlet property="bidView" destination="80o-oa-fjV" id="KmZ-vk-pam"/>
                                             <outlet property="declineBtn" destination="Gi2-pF-cHp" id="4X5-aL-msA"/>
-                                            <outlet property="offerAuthor" destination="Gas-FX-fPO" id="om5-py-WYV"/>
+                                            <outlet property="offerAuthor" destination="y2R-qt-ecC" id="64R-9w-GNT"/>
+                                            <outlet property="offerLabel" destination="xY6-VB-pmj" id="V4M-s6-GFn"/>
                                             <outlet property="offerTitle" destination="9Iz-vT-LqB" id="5zH-6o-pIt"/>
+                                            <outlet property="offerView" destination="nR1-1m-M41" id="bQB-Qi-aEd"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -539,7 +543,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSb-oZ-zor">
-                                                    <rect key="frame" x="9" y="53" width="193" height="21"/>
+                                                    <rect key="frame" x="10" y="53" width="192" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -566,7 +570,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="book description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4U0-Sn-19l">
-                                                    <rect key="frame" x="2" y="100" width="319" height="28"/>
+                                                    <rect key="frame" x="10" y="100" width="303" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -600,17 +604,17 @@
                                             <constraint firstItem="mDi-K0-yeD" firstAttribute="leading" secondItem="2KP-Y8-fwK" secondAttribute="trailing" constant="2" id="7UC-vd-Owt"/>
                                             <constraint firstItem="2KP-Y8-fwK" firstAttribute="top" secondItem="FSb-oZ-zor" secondAttribute="bottom" constant="2" id="7t7-sr-U9V"/>
                                             <constraint firstItem="FSb-oZ-zor" firstAttribute="top" secondItem="aHB-Ay-LD1" secondAttribute="topMargin" constant="1" id="9gV-4P-Bcf"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="4U0-Sn-19l" secondAttribute="trailing" constant="2" id="B8q-WU-sGR"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="wbK-Rd-kBl" secondAttribute="trailing" constant="2" id="Dc3-9f-fI1"/>
                                             <constraint firstItem="2KP-Y8-fwK" firstAttribute="top" secondItem="FSb-oZ-zor" secondAttribute="bottom" constant="2" id="DpJ-1c-bqR"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="wbK-Rd-kBl" secondAttribute="bottom" id="E9k-nf-K8w"/>
                                             <constraint firstItem="mDi-K0-yeD" firstAttribute="centerY" secondItem="2KP-Y8-fwK" secondAttribute="centerY" id="FNx-pl-aYd"/>
-                                            <constraint firstAttribute="trailing" secondItem="4U0-Sn-19l" secondAttribute="trailing" constant="2" id="KBM-Jk-GIa"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="mDi-K0-yeD" secondAttribute="trailing" constant="2" id="O0n-k3-6xX"/>
                                             <constraint firstItem="oS3-rG-xDf" firstAttribute="leading" secondItem="FSb-oZ-zor" secondAttribute="trailing" constant="2" id="QFS-Io-8nd"/>
+                                            <constraint firstItem="4U0-Sn-19l" firstAttribute="leading" secondItem="aHB-Ay-LD1" secondAttribute="leadingMargin" constant="2" id="TpJ-KB-eVz"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="oS3-rG-xDf" secondAttribute="trailing" constant="1" id="UkQ-Gt-Vj8"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="mDi-K0-yeD" secondAttribute="trailing" constant="2" id="VMC-SR-dI1"/>
-                                            <constraint firstItem="4U0-Sn-19l" firstAttribute="leading" secondItem="aHB-Ay-LD1" secondAttribute="leading" constant="2" id="VOF-9i-3Bo"/>
-                                            <constraint firstItem="FSb-oZ-zor" firstAttribute="leading" secondItem="aHB-Ay-LD1" secondAttribute="leadingMargin" constant="1" id="YwG-Qp-J5U"/>
+                                            <constraint firstItem="FSb-oZ-zor" firstAttribute="leading" secondItem="aHB-Ay-LD1" secondAttribute="leadingMargin" constant="2" id="YwG-Qp-J5U"/>
                                             <constraint firstItem="wbK-Rd-kBl" firstAttribute="top" secondItem="4U0-Sn-19l" secondAttribute="bottom" constant="2" id="bGO-We-7MG"/>
                                             <constraint firstItem="oS3-rG-xDf" firstAttribute="centerY" secondItem="FSb-oZ-zor" secondAttribute="centerY" id="dzK-qB-am3"/>
                                             <constraint firstItem="4U0-Sn-19l" firstAttribute="top" secondItem="mDi-K0-yeD" secondAttribute="bottom" constant="3" id="f3y-GN-cjX"/>

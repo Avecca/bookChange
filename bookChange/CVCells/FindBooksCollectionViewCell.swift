@@ -30,7 +30,7 @@ class FindBooksCollectionViewCell: UICollectionViewCell {
             titleLbl.text = book.title
             //TODO maybe format here and not when adding to db, if so change Book. init
             dateLbl.text = book.timeStamp
-            authorLbl.text = " by: " + book.authorFirstName + " " + book.authorLastName
+            authorLbl.text = "by: " + book.authorFirstName + " " + book.authorLastName
             genreLbl.text = book.genre
             descriptionLbl.text = book.description
             

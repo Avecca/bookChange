@@ -68,14 +68,27 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
          
             //TODO dubbelkolla att userId stämmer också
            let updateRef =  db.collection("books").document(bookId)
-                    
-            updateRef.updateData(["status" : "published"]) {
-                err in
-                if let err = err {
-                    print("Error : \(err)")
-                } else {
-                    print("book status updated w/id: " + bookId)
+            
+            
+            if books[index].status != "published" {
+                updateRef.updateData(["status" : "published"]) {
+                    err in
+                    if let err = err {
+                        print("Error : \(err)")
+                    } else {
+                        print("book status updated w/id: " + bookId)
+                    }
                 }
+            } else {
+                updateRef.updateData(["status" : ""]) {
+                    err in
+                    if let err = err {
+                        print("Error : \(err)")
+                    } else {
+                        print("book status updated to unpublished w/id: " + bookId)
+                    }
+                }
+                
             }
         
         }
@@ -218,6 +231,8 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
 //          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
         
+        
+        //TODO kan göra detta med sort på arreyen här istället?
         
         switch myBooksSegmentCtrl.selectedSegmentIndex {
         case 0:

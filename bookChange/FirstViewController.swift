@@ -11,7 +11,7 @@ import Firebase
 
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var books = [Book]()
+    //var books = [Book]()
     var bids = [Bid]()
     var bidBookInfos = [BidBookInfo]()
     var db : Firestore!
@@ -20,6 +20,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     var findByGenre: String!
     var orderBy: String!
+    var searchString: String!
     
     let segToLogIn = "unwindToLogInId"
     
@@ -38,6 +39,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         
         self.orderBy = "timeStamp"
+        self.searchString = "offeredBookUserId"
         
         //collectionViews elegate and datasource connection
         offersBidsView.delegate = self
@@ -66,7 +68,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             //let ref = db.collection("bids").whereField("offeredBookUserId", isEqualTo: self.userId)//.order(by: self.orderBy)
             
             //Find a bid where I have made clicked bid, thereby making an offer
-            let bidRef = db.collection("bids").whereField("offeredBookUserId", isEqualTo: cUserId)
+            let bidRef = db.collection("bids").whereField(searchString, isEqualTo: cUserId).whereField("status", isLessThanOrEqualTo: "bid") //.whereField("status", isEqualTo: "bid")//.whereField("status", isLessThanOrEqualTo: "bid")//.order(by: "status")//.order(by: "timeStamp")//.order(by: "timeStamp")
             print("query gjord")
             
             
@@ -139,6 +141,22 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     //to change values on segment choosen changed
     @IBAction func segmentCtrlChanged(_ sender: Any) {
+        
+        //TODO ändra så det här ändrar hela searchsträngen man slänger in i listenern istället?
+        
+        //change the searchstring
+        switch segmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.searchString = "offeredBookUserId"
+        case 1:
+            self.searchString = "bookUId"
+        default:
+            self.searchString = "offeredBookUserId"
+        }
+        
+        print("trying to change the searchString")
+        
+        showMyBids()
     }
     
     

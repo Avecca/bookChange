@@ -53,7 +53,7 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         let  bookId = books[index].bookId
         let bookOwnerId = books[index].userId
         //TODO FIX THE HARDCODING
-        let offeredBookId = "89OCgCREq8KOZpZvqxnr"
+        let offeredBookId = "YpEW4j78kUJ6KptcJep5"
         
         //self.present(self.alert,animated: true)
         

@@ -30,6 +30,12 @@ class MyBooksViewCell: UICollectionViewCell {
         genreLbl.text = book.genre
         descriptionLbl.text = book.description
         
+        if book.status != "published" {
+            publishBookBtn.setTitle("publish", for: .normal)
+        } else {
+            publishBookBtn.setTitle("un-publish", for: .normal)
+        }
+        
     }
     
     
