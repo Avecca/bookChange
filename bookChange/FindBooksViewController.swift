@@ -53,7 +53,9 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         let  bookId = books[index].bookId
         let bookOwnerId = books[index].userId
         //TODO FIX THE HARDCODING
-        let offeredBookId = "YpEW4j78kUJ6KptcJep5"
+        let offeredBookId = "89OCgCREq8KOZpZvqxnr"
+        //89OCgCREq8KOZpZvqxnr  Ghost av Test
+        //YpEW4j78kUJ6KptcJep5"  klo av Mei
         
         //self.present(self.alert,animated: true)
         
@@ -81,7 +83,7 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
                 err in
                 
                 if let erro = err {
-                    print("error bidding on book")
+                    print("error bidding on book: \(erro)")
                 } else {
                     
                     print("bid added with \(ref?.documentID)")
@@ -159,6 +161,10 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
                 (snapshot, error) in
                 
                 var newBooks = [Book]()
+                if error != nil {
+                    print("error in finding searched books")
+                    return
+                }
                 
                 for document in snapshot!.documents {
                     let book =  Book(snapshot: document)

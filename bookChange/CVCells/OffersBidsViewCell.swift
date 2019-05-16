@@ -64,6 +64,10 @@ class OffersBidsViewCell: UICollectionViewCell {
         
         fbBidRef.getDocument(){
             (doc , err ) in
+            
+            if err != nil {
+                return
+            }
 
             if let doc = doc, doc.exists {
                 let value = doc.data() as! [String: Any]

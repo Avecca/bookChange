@@ -55,6 +55,65 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
       showMyBids()
     }
     
+    @IBAction func deleteBtnPressed(_ sender: UIButton) {
+  
+         print("Deletebtn presed with index : \(sender.tag)")
+
+        
+        let index = sender.tag
+        
+        switch sender.titleLabel?.text {
+            case "remove bid":
+                print("DELETING BID")
+                updateBid(index: index, status : "deleted")
+            case "accepted email":
+                print("POPUP!!!!!")
+            case "decline":
+                print("Decline the offer!")
+                updateBid(index: index, status: "declined")
+            default:
+                return
+        }
+        
+        
+
+//
+//        if sender.titleLabel?.text == "remove bid" {
+//
+//            print("DELETING BID")
+//        }
+        
+    }
+
+    
+    @IBAction func acceptBtnPressed(_ sender: UIButton) {
+        print("Acceptbtn presed with index : \(sender.tag)")
+        let index = sender.tag
+        switch sender.titleLabel?.text {
+        case "accept":
+            print("Accepting offer")
+            updateBid(index: index, status: "accepted")
+        default:
+            return
+        }
+    }
+    func updateBid(index : Int, status : String){
+        
+        
+        //not actually deleteing, but updating the status to deleted
+        if let bidId = bids[index].bidId {
+            if auth.currentUser != nil{
+                
+                let updateRef = db.collection("bids").document(bidId)
+                
+                updateRef.updateData(["status" : status])
+                print("updated bid with DELETED")
+            }
+        }
+        
+        
+    }
+    
     func showMyBids() {
         
         if auth.currentUser != nil {
@@ -71,7 +130,8 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             let bidRef = db.collection("bids").whereField(searchString, isEqualTo: cUserId).whereField("status", isLessThanOrEqualTo: "bid") //.whereField("status", isEqualTo: "bid")//.whereField("status", isLessThanOrEqualTo: "bid")//.order(by: "status")//.order(by: "timeStamp")//.order(by: "timeStamp")
             print("query gjord")
             
-            
+            //TODO Visa decloined men inte deleted?
+            //TODO kanske visa ddclined o sen autoremove declined inom 24h?
             
             bidRef.addSnapshotListener() {
                 (snapShot, error) in
@@ -81,6 +141,13 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 var newBids = [Bid]()
                 print("lista av bids gjord")
                 //var newBidInfo = [BidBookInfo]()
+                
+                if error != nil {
+                    print("error in finding bids")
+                    return
+                    
+                }
+                
                 
                 for document in snapShot!.documents {
                     
@@ -180,6 +247,9 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         let cellIndex = indexPath.item
         
         cell.configCell(bid: bids[cellIndex])
+        
+        cell.declineBtn.tag = cellIndex
+        cell.acceptBtn.tag = cellIndex
         
         
         //TODO

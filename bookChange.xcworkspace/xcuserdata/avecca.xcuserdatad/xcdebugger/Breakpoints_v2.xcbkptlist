@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "bookChange/Bid.swift"
-            timestampString = "578700649.621961"
+            timestampString = "579607117.951048"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "init(snapshot:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "bookChange/FirstViewController.swift"
-            timestampString = "578700649.6222709"
+            timestampString = "579738933.272072"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "showMyBids()"
             landmarkType = "7">
          </BreakpointContent>

@@ -94,6 +94,8 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
+    
+    //TODO DELETE alla offers där denna ingår, eller snarare updatera statusen
     @IBAction func deleteBookBtnPressed(_ sender: UIButton) {
         
         let index = sender.tag
@@ -215,6 +217,11 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
                 (snapshot, error) in
                 
                 var newBooks = [Book]()
+                
+                if error != nil {
+                    print("error in finding mybooks")
+                    return
+                }
                 
                 for document in snapshot!.documents {
                     let book =  Book(snapshot: document)

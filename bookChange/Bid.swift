@@ -13,6 +13,7 @@ import Firebase
 class Bid {
     
     private(set) var bookUId: String!
+    private(set) var bidId: String!
     private(set) var bookId: String!
     private(set) var offeredBookId: String!
     private(set) var offeredBookUserId: String!
@@ -23,7 +24,7 @@ class Bid {
     
     //place senare , TODO
     //bookId: String,
-    init(bookUId: String, bookId: String, offeredBookId: String, offeredBookUserId: String, timeStamp: String,  status: String ) {
+    init(bookUId: String,bidId: String, bookId: String, offeredBookId: String, offeredBookUserId: String, timeStamp: String,  status: String ) {
         
         self.bookUId = bookUId
         self.bookId = bookId
@@ -45,7 +46,7 @@ class Bid {
         offeredBookUserId = sSValue["offeredBookUserId"] as! String
         timeStamp = sSValue["timeStamp"] as! String
         status = sSValue["status"] as! String
-
+        bidId =  snapshot.documentID
         
         //snapshot.documentID
         
