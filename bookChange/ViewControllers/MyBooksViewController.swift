@@ -55,6 +55,30 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         updateMyBooksArray()
     }
     
+    @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
+        //          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
+        
+        
+        //TODO kan göra detta med sort på arreyen här istället?
+        
+        listener?.remove()
+        
+        switch myBooksSegmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.orderBy = "authorLastName"
+        case 1:
+            self.orderBy = "title"
+        default:
+            self.orderBy = "title"
+        }
+        
+        //TODO GAAAAH named sooo wrong
+        
+        print("trying to reload")
+        updateMyBooksArray()
+        
+    }
+    
     @IBAction func publishBtnPressed(_ sender: UIButton) {
         print("Publish!!")
         
@@ -121,7 +145,9 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
                     
                    // var deletedBookAtUserRef: DocumentReference? = nil
                     //deletedBookAtUserRef = self.db.collection("users").document(userId).collection("books").whereField("bookId", isEqualTo: bookId)
-                   
+                    
+                    
+                    
                     let deleteBookAtUser = self.db.collection("users").document(userId).collection("books").whereField("bookId", isEqualTo: bookId).getDocuments() { (QuerySnapshot, err) in
                         
                             if let erro = err {
@@ -130,10 +156,22 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
                                 for doc in QuerySnapshot!.documents {
                                     doc.reference.delete()
                                     print("bookId deleted from user with refId \(doc.documentID)  ")
+                                    
+                                    
                                 }
+                                
                                
                             }
                     }
+                    
+                    self.updateBidWhenBookDeleted(bookId: bookId, userId: userId )
+                    
+                    
+
+                    //                    let updateBidsWithBookId = self.db.collection("bids").whereField("bookId", isEqualTo: bookId)
+                    //                    updateBidsWithBookId.updateData(["status" : "deletedbook"])
+                    
+
                         
                     //let bookIdAtUser = deleteBookAtUser
                     
@@ -168,54 +206,43 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
             
         }
     }
-    @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
-        //          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
+    
+    func updateBidWhenBookDeleted(bookId: String, userId : String){
         
         
-        //TODO kan göra detta med sort på arreyen här istället?
-        
-        listener?.remove()
-        
-        switch myBooksSegmentCtrl.selectedSegmentIndex {
-        case 0:
-            self.orderBy = "authorLastName"
-        case 1:
-            self.orderBy = "title"
-        default:
-            self.orderBy = "title"
+        //update status on bids containing the deleted book as either bookId
+        self.db.collection("bids").whereField("bookUId", isEqualTo: userId).whereField("bookId", isEqualTo: bookId).getDocuments() { (snapshot, err) in
+            
+            if let error = err {
+                print("Bids containing bookId \(bookId) was not updated")
+                print(error)
+            } else{
+                for doc in snapshot!.documents {
+                    doc.reference.updateData(["status" : "deletedbook"])
+                    print("Updated bids containing bookId \(bookId) with deletedbook")
+                }
+                
+            }
         }
         
-        //TODO GAAAAH named sooo wrong
+        let bidRefWithBookId = self.db.collection("bids").whereField("offeredBookUserId", isEqualTo: userId).whereField("offeredBookId", isEqualTo: bookId)
         
-        print("trying to reload")
-        updateMyBooksArray()
-        
-        
+        //or offeredBookId
+        bidRefWithBookId.getDocuments() { (snapshot, err) in
+            
+            if err != nil {
+                print("Bids containing offeredBookId \(bookId) was not updated")
+            } else{
+                for doc in snapshot!.documents {
+                    doc.reference.updateData(["status" : "deletedbook"])
+                    print("Updated bids containing offeredBookId \(bookId) with deletedbook")
+                }
+                
+            }
+        }
     }
-    //    @IBAction func publishBtnPressed(_ sender: UIButton) {
-//
-//        print("publish tryckts!")
-//
-//        let index = sender.tag
-//
-//        let bookId = books[index].bookId!
-//
-//        if Auth.auth().currentUser != nil {
-//
-//           let updateRef =  db.collection("books").document(bookId)
-//
-//            updateRef.updateData(["status" : "published"]) {
-//                err in
-//                if let err = err {
-//                    print("Error : \(err)")
-//                } else {
-//                    print("book status updated w/id: " + bookId)
-//                }
-//            }
-//
-//        }
-//
-//    }
+
+
     
     func updateMyBooksArray() {
         
@@ -286,3 +313,29 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
 }
+
+
+//    @IBAction func publishBtnPressed(_ sender: UIButton) {
+//
+//        print("publish tryckts!")
+//
+//        let index = sender.tag
+//
+//        let bookId = books[index].bookId!
+//
+//        if Auth.auth().currentUser != nil {
+//
+//           let updateRef =  db.collection("books").document(bookId)
+//
+//            updateRef.updateData(["status" : "published"]) {
+//                err in
+//                if let err = err {
+//                    print("Error : \(err)")
+//                } else {
+//                    print("book status updated w/id: " + bookId)
+//                }
+//            }
+//
+//        }
+//
+//    }
