@@ -139,6 +139,29 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		93115AD32291C42E001853A3 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				93F063DC2272500D00C8F372 /* LogInViewController.swift */,
+				9344EF96222DC7DF0035B26D /* FirstViewController.swift */,
+				9344EF98222DC7DF0035B26D /* FindBooksViewController.swift */,
+				93F063D822724E0400C8F372 /* MyBooksViewController.swift */,
+				93F063E222726CFE00C8F372 /* NewBookViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		93115AD42291C73F001853A3 /* SupportClasses */ = {
+			isa = PBXGroup;
+			children = (
+				93F063DE227253C800C8F372 /* Book.swift */,
+				93F063E02272576700C8F372 /* User.swift */,
+				9309DB6F227B491600F01C9F /* Bid.swift */,
+				9309DB71227B8DBB00F01C9F /* BidBookInfo.swift */,
+			);
+			path = SupportClasses;
+			sourceTree = "<group>";
+		};
 		9344EF88222DC7DF0035B26D = {
 			isa = PBXGroup;
 			children = (
@@ -165,23 +188,16 @@
 		9344EF93222DC7DF0035B26D /* bookChange */ = {
 			isa = PBXGroup;
 			children = (
+				93115AD42291C73F001853A3 /* SupportClasses */,
 				93139EF1227156E4002ACD14 /* GoogleService-Info.plist */,
+				93115AD32291C42E001853A3 /* ViewControllers */,
 				93F063D5227166DC00C8F372 /* CVCells */,
 				9344EF94222DC7DF0035B26D /* AppDelegate.swift */,
-				9344EF96222DC7DF0035B26D /* FirstViewController.swift */,
-				9344EF98222DC7DF0035B26D /* FindBooksViewController.swift */,
 				9344EF9A222DC7DF0035B26D /* Main.storyboard */,
-				93F063DC2272500D00C8F372 /* LogInViewController.swift */,
-				93F063D822724E0400C8F372 /* MyBooksViewController.swift */,
-				93F063E222726CFE00C8F372 /* NewBookViewController.swift */,
 				93AE11B922502199002922E9 /* TabOverView.swift */,
-				93F063DE227253C800C8F372 /* Book.swift */,
-				93F063E02272576700C8F372 /* User.swift */,
 				9344EF9D222DC7E10035B26D /* Assets.xcassets */,
 				9344EF9F222DC7E10035B26D /* LaunchScreen.storyboard */,
 				9344EFA2222DC7E10035B26D /* Info.plist */,
-				9309DB6F227B491600F01C9F /* Bid.swift */,
-				9309DB71227B8DBB00F01C9F /* BidBookInfo.swift */,
 			);
 			path = bookChange;
 			sourceTree = "<group>";
