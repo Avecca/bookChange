@@ -199,7 +199,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         do {
             try auth.signOut()
             
-            
+            listener?.remove()
             //tillbaka segway händer genom storyboarden
             
         } catch let signOutError as NSError {
