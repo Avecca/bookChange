@@ -25,9 +25,10 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
     var auth : Auth!
     var date: Date!
     let format = DateFormatter()
+    var listener : ListenerRegistration?
     //var userId: String!
     
-    var findByGenre: String!
+    var findByGenre: String = "all"
     var orderBy: String!
     
     var bookId : String = "" // books[index].bookId
@@ -100,6 +101,33 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         offerLbl.isEnabled = false
         
     }
+    
+    @IBAction func genreSegmentChanged(_ sender: Any) {
+        
+        listener?.remove()
+        
+        switch genreSegmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.findByGenre = "all"
+        case 1:
+            self.findByGenre = "cooking"
+        case 2:
+            self.findByGenre = "fiction"
+        case 3:
+            self.findByGenre = "non-fiction"
+        case 4:
+            self.findByGenre = "sci-fi"
+        default:
+            self.findByGenre = "all"
+        }
+        
+        
+        
+        updateFindBooksArray()
+        
+        
+    }
+    
     
     func addingOffer() {
         
@@ -253,7 +281,20 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
             
             //print(userId + " is userid")
             
-            let bookRef =  db.collection("books").whereField("status", isEqualTo: "published")//.whereField("userId", isEqualTo: userId)//db.collection("books")
+            var bookRef: Query
+            
+            if findByGenre.isEmpty{
+                return
+            } else if findByGenre != "all" {
+                bookRef =  db.collection("books").whereField("status", isEqualTo: "published").whereField("genre", isEqualTo: findByGenre)//.whereField("userId", isEqualTo: userId)//db.collection("books")
+                
+            } else {
+                bookRef =  db.collection("books").whereField("status", isEqualTo: "published")//.whereField("userId", isEqualTo: userId)//db.collection("books")
+                
+            }
+            
+            
+
             
             bookRef.addSnapshotListener() {
                 (snapshot, error) in
@@ -323,7 +364,6 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
             let cell = findBooksCV.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! FindBooksCollectionViewCell
-
             let cellIndex = indexPath.item
             cell.configCell(book: books[cellIndex])
 

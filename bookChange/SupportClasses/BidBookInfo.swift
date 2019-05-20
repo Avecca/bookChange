@@ -48,15 +48,23 @@ class BidBookInfo {
     }
     
     init(snapshot: QueryDocumentSnapshot) {
-        let sSValue = snapshot.data() as [String: Any]
+        
+        //TODO guard let
+        if let sSValue = snapshot.data() as? [String: Any]{
         
         
-        bookId = sSValue["bookId"] as! String
-        offeredBookId = sSValue["offeredBookId"] as! String
-        offeredBookUserId = sSValue["offeredBookUserId"] as! String
-        timeStamp = sSValue["timeStamp"] as! String
-        status = sSValue["status"] as! String
-        bookUId = sSValue["bookUId"] as! String
+            bookId = sSValue["bookId"] as? String ?? ""
+            offeredBookId = sSValue["offeredBookId"] as? String ?? ""
+            offeredBookUserId = sSValue["offeredBookUserId"] as? String ?? ""
+            timeStamp = sSValue["timeStamp"] as? String ?? ""
+            status = sSValue["status"] as? String ?? ""
+            bookUId = sSValue["bookUId"] as? String ?? ""
+        }
+        
+        
+        if bookId.isEmpty || offeredBookId.isEmpty {
+            return
+        }
         
         db = Firestore.firestore()
         
@@ -66,7 +74,7 @@ class BidBookInfo {
         
         let fbBidRef = db.collection("books").document(bookId)
         let fbOfferRef = db.collection("books").document(offeredBookId)
-        let ref = db.collection("books").document(bookId)
+        //let ref = db.collection("books").document(bookId)
         
         fbOfferRef.getDocument() {
             (doc , err ) in
@@ -81,7 +89,7 @@ class BidBookInfo {
                 self.bookAuthor = bidBook!.authorFirstName + " " + bidBook!.authorLastName
                 
                 
-                ref.getDocument(){
+                fbBidRef.getDocument(){
                     (offer, err) in
                     
                     if let offer = offer, offer.exists {

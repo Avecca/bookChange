@@ -42,40 +42,44 @@ class Book {
     }
     
     init(snapshot: QueryDocumentSnapshot) {
-        let sSValue = snapshot.data() as [String: Any]
+        if let sSValue = snapshot.data() as? [String: Any] {
         
-        userId = sSValue["userId"] as! String
-        bookId = snapshot.documentID
-        title = sSValue["title"] as! String
-        authorFirstName = sSValue["authorFirstName"] as! String
-        authorLastName = sSValue["authorLastName"] as! String
-        genre = sSValue["genre"] as! String
-        description = sSValue["description"] as! String
-        meetingAdress = sSValue["meetingAdress"] as! String
+        //TODO GUARDLET
         
-        //TODO formatera strängen till bara yyy-MM-dd
-        timeStamp = sSValue["timeStamp"] as! String
-        status = sSValue["status"] as! String
+            userId = sSValue["userId"] as? String ?? ""
+            bookId = snapshot.documentID
+            title = sSValue["title"] as? String ?? ""
+            authorFirstName = sSValue["authorFirstName"] as? String ?? ""
+            authorLastName = sSValue["authorLastName"] as? String ?? ""
+            genre = sSValue["genre"] as? String ?? ""
+            description = sSValue["description"] as? String ?? ""
+            meetingAdress = sSValue["meetingAdress"] as? String ?? ""
         
+            //TODO formatera strängen till bara yyy-MM-dd
+            timeStamp = sSValue["timeStamp"] as? String ?? ""
+            status = sSValue["status"] as? String ?? ""
         
+        }
         
         
     }
     init(snapshot:  [String: Any], docId : String ) {
         //let sSValue = snapshot.data() as [String: Any]
         
-        userId = snapshot["userId"] as! String
+        //TODO GUARDLET
+        
+        userId = snapshot["userId"] as? String ?? ""
         bookId = docId
-        title = snapshot["title"] as! String
-        authorFirstName = snapshot["authorFirstName"] as! String
-        authorLastName = snapshot["authorLastName"] as! String
-        genre = snapshot["genre"] as! String
-        description = snapshot["description"] as! String
-        meetingAdress = snapshot["meetingAdress"] as! String
+        title = snapshot["title"] as? String ?? ""
+        authorFirstName = snapshot["authorFirstName"] as? String ?? ""
+        authorLastName = snapshot["authorLastName"] as? String ?? ""
+        genre = snapshot["genre"] as? String ?? ""
+        description = snapshot["description"] as? String ?? ""
+        meetingAdress = snapshot["meetingAdress"] as? String ?? ""
         
         //TODO formatera strängen till bara yyy-MM-dd
-        timeStamp = snapshot["timeStamp"] as! String
-        status = snapshot["status"] as! String
+        timeStamp = snapshot["timeStamp"] as? String ?? ""
+        status = snapshot["status"] as? String ?? ""
         
         
         

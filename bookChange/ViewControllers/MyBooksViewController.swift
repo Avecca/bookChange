@@ -95,7 +95,7 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     
-    //TODO DELETE alla offers där denna ingår, eller snarare updatera statusen
+    //TODO DELETE alla offers där denna ingår, eller snarare updatera statusen, deletedbeforecompleation
     @IBAction func deleteBookBtnPressed(_ sender: UIButton) {
         
         let index = sender.tag
