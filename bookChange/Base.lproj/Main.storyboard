@@ -80,6 +80,11 @@
                                                             <rect key="frame" x="20" y="80" width="133" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="3"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="deleteBtnPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="ntc-UY-fua"/>
                                                             </connections>
@@ -127,6 +132,11 @@
                                                             <color key="backgroundColor" red="0.67425818520000003" green="0.83466846449999998" blue="0.54347045000000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="accept"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="3"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="acceptBtnPressed:" destination="9pv-A4-QxB" eventType="touchUpInside" id="vce-ej-GdI"/>
                                                             </connections>
@@ -171,6 +181,11 @@
                                             <constraint firstItem="80o-oa-fjV" firstAttribute="top" secondItem="0fz-Q9-YUi" secondAttribute="top" id="ahU-Jm-49g"/>
                                             <constraint firstItem="nR1-1m-M41" firstAttribute="top" secondItem="0fz-Q9-YUi" secondAttribute="top" id="qdF-70-AVN"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="acceptBtn" destination="7cS-ws-Sqi" id="2x0-97-hZR"/>
                                             <outlet property="bidAuthor" destination="Gas-FX-fPO" id="oA5-cT-8a5"/>
@@ -285,7 +300,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9el-Wh-Mq0">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="genre" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9el-Wh-Mq0">
                                                     <rect key="frame" x="71" y="50.5" width="268" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="qII-4C-rcF"/>
@@ -310,6 +325,11 @@
                                                     <state key="normal" title="remove">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="deleteBookBtnPressed:" destination="bb8-Uy-d4b" eventType="touchUpInside" id="GiP-or-Ew6"/>
                                                     </connections>
@@ -324,6 +344,11 @@
                                                     <state key="normal" title="publish">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="publishBtnPressed:" destination="bb8-Uy-d4b" eventType="touchUpInside" id="gPO-Tl-pEQ"/>
                                                     </connections>
@@ -357,6 +382,11 @@
                                             <constraint firstItem="McX-E6-6kN" firstAttribute="leading" secondItem="nKy-0X-V40" secondAttribute="leadingMargin" constant="1" id="qEp-nV-bQn"/>
                                             <constraint firstItem="McX-E6-6kN" firstAttribute="top" secondItem="o7t-gz-SwC" secondAttribute="bottom" constant="2" id="qhw-1v-VIc"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="authorLbl" destination="dsP-LW-h2y" id="7wJ-Y7-PSx"/>
                                             <outlet property="dateLbl" destination="lAe-XB-uir" id="qTp-v0-vKT"/>
@@ -450,6 +480,11 @@
                                 <state key="normal" title="save book">
                                     <color key="titleColor" red="0.45828045690000002" green="0.45828045690000002" blue="0.45828045690000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="saveBtnPressed:" destination="5Aa-DB-fSY" eventType="touchUpInside" id="g2T-Vl-WyC"/>
                                 </connections>
@@ -568,7 +603,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDi-K0-yeD">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="genre" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDi-K0-yeD">
                                                     <rect key="frame" x="222" y="52" width="110" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="Vzh-8Q-9q9"/>
@@ -596,6 +631,11 @@
                                                     <state key="normal" title="bid">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="3"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                     <connections>
                                                         <action selector="bidPressed:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="saH-xa-kHT"/>
                                                     </connections>
@@ -634,6 +674,11 @@
                                             <constraint firstItem="mDi-K0-yeD" firstAttribute="leading" secondItem="2KP-Y8-fwK" secondAttribute="trailing" constant="2" id="oWo-EP-3xg"/>
                                             <constraint firstItem="wbK-Rd-kBl" firstAttribute="top" secondItem="4U0-Sn-19l" secondAttribute="bottom" constant="2" id="xF9-PS-EKB"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="authorLbl" destination="2KP-Y8-fwK" id="WD1-OP-bnx"/>
                                             <outlet property="bidBookBtn" destination="wbK-Rd-kBl" id="sLj-xH-mhR"/>

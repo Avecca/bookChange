@@ -11,6 +11,9 @@ import Firebase
 
 class FirstViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    @IBOutlet weak var segmentCtrl: UISegmentedControl!
+    @IBOutlet weak var offersBidsView: UICollectionView!
+    
     //var books = [Book]()
     var bids = [Bid]()
     var bidBookInfos = [BidBookInfo]()
@@ -19,25 +22,17 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     var listener : ListenerRegistration?
     //var userId: String!
     
+    let segToLogIn = "unwindToLogInId"
     var findByGenre: String!
     var orderBy: String!
     var searchString: String!
     
-    let segToLogIn = "unwindToLogInId"
-    
-    
-    @IBOutlet weak var segmentCtrl: UISegmentedControl!
-    @IBOutlet weak var offersBidsView: UICollectionView!
-    
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         db = Firestore.firestore()
         auth = Auth.auth()
-        
-        
         
         self.orderBy = "timeStamp"
         self.searchString = "offeredBookUserId"
@@ -46,8 +41,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         offersBidsView.delegate = self
         offersBidsView.dataSource = self
         
-        
-        
+  
     }
     
     
@@ -76,14 +70,6 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 return
         }
         
-        
-
-//
-//        if sender.titleLabel?.text == "remove bid" {
-//
-//            print("DELETING BID")
-//        }
-        
     }
 
     
@@ -98,8 +84,46 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             return
         }
     }
-    func updateBid(index : Int, status : String){
+    
+    @IBAction func logOutBtnPressed(_ sender: Any) {
         
+        do {
+            try auth.signOut()
+            
+            listener?.remove()
+            //tillbaka segway händer genom storyboarden
+            
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        
+        
+    }
+    
+    //to change values on segment choosen changed
+    @IBAction func segmentCtrlChanged(_ sender: Any) {
+        
+        //TODO ändra så det här ändrar hela searchsträngen man slänger in i listenern istället?
+        
+        //REMOVE SNAPSHOTLISTENERN
+        listener?.remove()
+        
+        //change the searchstring
+        switch segmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.searchString = "offeredBookUserId"
+        case 1:
+            self.searchString = "bookUId"
+        default:
+            self.searchString = "offeredBookUserId"
+        }
+        
+        print("trying to change the searchString")
+        
+        showMyBids()
+    }
+    
+    func updateBid(index : Int, status : String){
         
         //not actually deleteing, but updating the status to deleted
         if let bidId = bids[index].bidId {
@@ -174,7 +198,6 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 //self.bidBookInfos = newBidInfo
                 
                 //print(self.bidBookInfos.description)
-                //TODO Remove later
                 self.bids = newBids
                 print(self.bids.description)
                 
@@ -193,46 +216,6 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         //Kalla från switch stamenet under segment ändringar
     }
     
-    @IBAction func logOutBtnPressed(_ sender: Any) {
-        
-
-        do {
-            try auth.signOut()
-            
-            listener?.remove()
-            //tillbaka segway händer genom storyboarden
-            
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-        
-        
-    }
-    //to change values on segment choosen changed
-    @IBAction func segmentCtrlChanged(_ sender: Any) {
-        
-        //TODO ändra så det här ändrar hela searchsträngen man slänger in i listenern istället?
-        
-        
-        //REMOVE SNAPSHOTLISTENERN
-        listener?.remove()
-        
-        //change the searchstring
-        switch segmentCtrl.selectedSegmentIndex {
-        case 0:
-            self.searchString = "offeredBookUserId"
-        case 1:
-            self.searchString = "bookUId"
-        default:
-            self.searchString = "offeredBookUserId"
-        }
-        
-        print("trying to change the searchString")
-        
-        showMyBids()
-    }
-    
-    
     
     //CollectionView Delegates and datasource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -247,8 +230,6 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = offersBidsView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! OffersBidsViewCell
-        
-        
         
         let cellIndex = indexPath.item
         

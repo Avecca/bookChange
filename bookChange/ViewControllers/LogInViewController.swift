@@ -11,23 +11,19 @@ import Firebase
 
 class LogInViewController: UIViewController {
     
-    
+    @IBOutlet weak var userNameTxtField: UITextField!
+    @IBOutlet weak var emailTxtField: UITextField!
+    @IBOutlet weak var passwordTxtField: UITextField!
     @IBOutlet weak var logInBtn: UIButton!
 
-    
-    let segueId = "segueToBookChange"
     var date: Date!
     let format = DateFormatter()
     var auth : Auth!
     var db : Firestore!
     
-    
-    @IBOutlet weak var userNameTxtField: UITextField!
-    @IBOutlet weak var emailTxtField: UITextField!
-    @IBOutlet weak var passwordTxtField: UITextField!
+    let segueId = "segueToBookChange"
     
     let alert = UIAlertController(title: "add a username", message: "choose a username for your account", preferredStyle: .alert)
-    
     let loginAlert = UIAlertController(title: "error loggin in", message: "either your email or password was not correct, please try again ", preferredStyle: .alert)
 
     
@@ -40,16 +36,16 @@ class LogInViewController: UIViewController {
          format.dateFormat = "yyy-MM-dd HH:mm"
         
         
-        //TODO byt till name, få den att hoppa vidare med enter osv
+        //Email is firstrespeonder when opening app
          emailTxtField.becomeFirstResponder()
         
+        //IF autologged in from previous session, do this in viewdid appear
 
-        
-        //IF autologged in from previous session
-
-      
+        //setup alerts
+        //alert for missing pw and email when logging in
         loginAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
         
+        //alert for creating a user
         alert.addAction(UIAlertAction(title: "cancel", style: .default, handler: nil))
         
         let alertActionOkBtn = UIAlertAction(title: "create", style: .default) { (nil) in
@@ -61,13 +57,10 @@ class LogInViewController: UIViewController {
                 guard let name = textField.text else {return}
                 
                 self.createUserWithName(name: name)
-                
             }
             else {
                 print("textfield is empty")
-                
             }
-            
         }
         
         self.alert.addTextField { (textField) in
@@ -108,17 +101,14 @@ class LogInViewController: UIViewController {
                         print("user är här" )
                         self.performSegue(withIdentifier: self.segueId, sender: self)
                     }else {
-                        
-                        //TODO POPUP
-                        
                         print("ingen user")
                         self.present(self.loginAlert, animated: true)
                         return
-                        
                     }
-                    
                 }
+                
             }
+            
         }
 
     }
@@ -126,16 +116,10 @@ class LogInViewController: UIViewController {
     
     func createUserWithName(name: String){
         
-        
         guard  let email = emailTxtField.text, !email.isEmpty, let pw = passwordTxtField.text, !pw.isEmpty else{
             print("Empty textfields!")
             return
         }
-        
-        
-        //if let email = emailTxtField.text{
-    
-            //if let pw = passwordTxtField.text{
         
         print("create pow exists")
         
@@ -167,25 +151,18 @@ class LogInViewController: UIViewController {
                 self.performSegue(withIdentifier: self.segueId, sender: self)
         
             } else{
-                                    //TODO POPUP
+                print("failed to crerate user")
+                                    //TODO POPUP maybe?
             }
         
         }
-        //
         //                    Auth.auth().createUser(withEmail: email, password: pw) { authResult, error in
-        
-        
-        //
-        //                    }
-        
 
     }
     
     
     
     @IBAction func createAccountBtnPressed(_ sender: Any) {
-        
-
         
         self.present(self.alert,animated: true, completion: nil)
 
@@ -244,7 +221,6 @@ class LogInViewController: UIViewController {
     }
     
     
-    
     //segue to next page
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print("Override händer med \(Players.playerArray.count) players")
@@ -254,23 +230,12 @@ class LogInViewController: UIViewController {
 //            let destinationVC = segue.destination as! TabOverView
 //        }
     
-
     }
-    
+    //return segue, TODO, när loggar ut
     @IBAction func unwindToHere(segue: UIStoryboardSegue) {
         //TODO Nolla text boxarna
         print("Tillbaka till Start")
         
     }
-    
-    //return segue, TODO, när loggar ut
-//    @IBAction func unwindToHere(segue: UIStoryboardSegue) {
-//        // print("Tillbaka till Start")
-//
-//    }
-    
-
-    
-
 
 }
