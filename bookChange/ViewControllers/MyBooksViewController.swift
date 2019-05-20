@@ -50,8 +50,6 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     
-    
-    
     //innan sidan ladda, ladda ner spelarens böcker, eller när den reloadas, när vi komemr tilbaka till den
     override func viewWillAppear(_ animated: Bool) {
         updateMyBooksArray()
@@ -97,7 +95,7 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     
-    //TODO DELETE alla offers där denna ingår, eller snarare updatera statusen
+    //TODO DELETE alla offers där denna ingår, eller snarare updatera statusen, deletedbeforecompleation
     @IBAction func deleteBookBtnPressed(_ sender: UIButton) {
         
         let index = sender.tag
@@ -135,9 +133,6 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
                                 }
                                
                             }
-                        
-                    
-                        
                     }
                         
                     //let bookIdAtUser = deleteBookAtUser
@@ -172,6 +167,30 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
 //            }
             
         }
+    }
+    @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
+        //          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
+        
+        
+        //TODO kan göra detta med sort på arreyen här istället?
+        
+        listener?.remove()
+        
+        switch myBooksSegmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.orderBy = "authorLastName"
+        case 1:
+            self.orderBy = "title"
+        default:
+            self.orderBy = "title"
+        }
+        
+        //TODO GAAAAH named sooo wrong
+        
+        print("trying to reload")
+        updateMyBooksArray()
+        
+        
     }
     //    @IBAction func publishBtnPressed(_ sender: UIButton) {
 //
@@ -237,33 +256,6 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     
-    @IBAction func myBooksSegmentChanged(_ sender: UISegmentedControl) {
-//          self.orderBy = myBooksSegmentCtrl.titleForSegment(at: myBooksSegmentCtrl.selectedSegmentIndex)
-        
-        
-        //TODO kan göra detta med sort på arreyen här istället?
-        
-        listener?.remove()
-        
-        switch myBooksSegmentCtrl.selectedSegmentIndex {
-        case 0:
-            self.orderBy = "authorLastName"
-        case 1:
-            self.orderBy = "title"
-        default:
-            self.orderBy = "title"
-        }
-        
-        //TODO GAAAAH named sooo wrong
-        
-        print("trying to reload")
-        updateMyBooksArray()
-        
-
-    }
-    
-    
-    
     //CollectionView Delegates and datasource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return books.count  //TODO .count  antalet
@@ -292,17 +284,5 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.layer.borderColor = UIColor.darkGray.cgColor
         return cell
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

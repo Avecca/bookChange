@@ -190,8 +190,8 @@
 			children = (
 				93115AD42291C73F001853A3 /* SupportClasses */,
 				93139EF1227156E4002ACD14 /* GoogleService-Info.plist */,
-				93115AD32291C42E001853A3 /* ViewControllers */,
 				93F063D5227166DC00C8F372 /* CVCells */,
+				93115AD32291C42E001853A3 /* ViewControllers */,
 				9344EF94222DC7DF0035B26D /* AppDelegate.swift */,
 				9344EF9A222DC7DF0035B26D /* Main.storyboard */,
 				93AE11B922502199002922E9 /* TabOverView.swift */,

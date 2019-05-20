@@ -37,18 +37,20 @@ class Bid {
     }
     
     init(snapshot: QueryDocumentSnapshot) {
-        let sSValue = snapshot.data() as [String: Any]
+        if let sSValue = snapshot.data() as? [String: Any]{
         
+        //TODO GUARDLET
         
-        bookId = sSValue["bookId"] as! String
-        bookUId = sSValue["bookUId"] as! String
-        offeredBookId = sSValue["offeredBookId"] as! String
-        offeredBookUserId = sSValue["offeredBookUserId"] as! String
-        timeStamp = sSValue["timeStamp"] as! String
-        status = sSValue["status"] as! String
-        bidId =  snapshot.documentID
+            bookId = sSValue["bookId"] as? String ?? ""
+            bookUId = sSValue["bookUId"] as? String ?? ""
+            offeredBookId = sSValue["offeredBookId"] as? String ?? ""
+            offeredBookUserId = sSValue["offeredBookUserId"] as? String ?? ""
+            timeStamp = sSValue["timeStamp"] as? String ?? ""
+            status = sSValue["status"] as? String ?? ""
+            bidId =  snapshot.documentID
         
         //snapshot.documentID
+        }
         
     }
     

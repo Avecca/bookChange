@@ -11,9 +11,6 @@ import Firebase
 
 class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource {
 
-    
-
-    //TODO STATUS ACCEPTED; BID; DECLINED, iF status >= BID osv osv
 
     @IBOutlet weak var genreSegmentCtrl: UISegmentedControl!
     @IBOutlet weak var findBooksCV: UICollectionView!
@@ -28,9 +25,10 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
     var auth : Auth!
     var date: Date!
     let format = DateFormatter()
+    var listener : ListenerRegistration?
     //var userId: String!
     
-    var findByGenre: String!
+    var findByGenre: String = "all"
     var orderBy: String!
     
     var bookId : String = "" // books[index].bookId
@@ -93,7 +91,6 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         offerLbl.isEnabled = false
         
         
-        
     }
     
     @IBAction func offerPressed(_ sender: Any) {
@@ -105,11 +102,37 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
+    @IBAction func genreSegmentChanged(_ sender: Any) {
+        
+        listener?.remove()
+        
+        switch genreSegmentCtrl.selectedSegmentIndex {
+        case 0:
+            self.findByGenre = "all"
+        case 1:
+            self.findByGenre = "cooking"
+        case 2:
+            self.findByGenre = "fiction"
+        case 3:
+            self.findByGenre = "non-fiction"
+        case 4:
+            self.findByGenre = "sci-fi"
+        default:
+            self.findByGenre = "all"
+        }
+        
+        
+        
+        updateFindBooksArray()
+        
+        
+    }
+    
+    
     func addingOffer() {
         
         guard let offeredBookId = bookPickerData[bookPicker.selectedRow(inComponent: 0)].bookId else {return}
         
-        //TODO FIX THE HARDCODING
         //offeredBookId = "89OCgCREq8KOZpZvqxnr"
         //89OCgCREq8KOZpZvqxnr  Ghost av Test
         //YpEW4j78kUJ6KptcJep5"  klo av Mei
@@ -148,12 +171,9 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
                     print("error bidding on book: \(erro)")
                 } else {
 
-
-
                     //add bid ref to booth users
 
                     //add bid to user making bid(offer), my bids
-
                     guard let refId = (ref?.documentID)  else {return}
 
                     print("bid added with \(refId)")
@@ -170,9 +190,9 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
                         }
                     }
 
-                    print("trying to add bidreference as offer")
                     //add bid to bookowner, recieved, my offer
-                    self.db.collection("users").document(self.bookOwnerId).collection("myOffers").addDocument(data: ["bidId" : refId]) {
+                    print("trying to add bidreference as offer")
+                 self.db.collection("users").document(self.bookOwnerId).collection("myOffers").addDocument(data: ["bidId" : refId]) {
                         err in
                         if let erro = err {
                             print("Bid id as an offer not saved to user")
@@ -182,13 +202,10 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
                         }
                     }
   
-
                 }
 
             }
         }
-        
-        
         
     }
 
@@ -197,7 +214,6 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
             
             
             //TODO Ändra till users böcker genom users istället, kanske
-            
             
             print("User är inloggad!")
             // User is signed in.
@@ -209,7 +225,7 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
             let fBRef = db.collection("books").whereField("userId", isEqualTo: userId).order(by: "title", descending: false)
             
             
-            //TODO STOP listener när ueryn ädras och gör ny, i mybooksSegmentchanged?
+            //TODO STOP listener när queryn ädras och gör ny, i mybooksSegmentchanged?
             fBRef.addSnapshotListener() {
                 (snapshot, error) in
                 
@@ -265,7 +281,20 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
             
             //print(userId + " is userid")
             
-            let bookRef =  db.collection("books").whereField("status", isEqualTo: "published")//.whereField("userId", isEqualTo: userId)//db.collection("books")
+            var bookRef: Query
+            
+            if findByGenre.isEmpty{
+                return
+            } else if findByGenre != "all" {
+                bookRef =  db.collection("books").whereField("status", isEqualTo: "published").whereField("genre", isEqualTo: findByGenre)//.whereField("userId", isEqualTo: userId)//db.collection("books")
+                
+            } else {
+                bookRef =  db.collection("books").whereField("status", isEqualTo: "published")//.whereField("userId", isEqualTo: userId)//db.collection("books")
+                
+            }
+            
+            
+
             
             bookRef.addSnapshotListener() {
                 (snapshot, error) in
@@ -334,11 +363,7 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-
             let cell = findBooksCV.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! FindBooksCollectionViewCell
-
-
-
             let cellIndex = indexPath.item
             cell.configCell(book: books[cellIndex])
 

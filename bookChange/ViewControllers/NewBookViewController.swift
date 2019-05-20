@@ -26,6 +26,7 @@ class NewBookViewController: UIViewController {
     var auth : Auth!
     
     let alert = UIAlertController(title: "adding book", message: "a book was added to your library myBooks", preferredStyle: .alert)
+    let missingAlert = UIAlertController(title: "missing field", message: "fill all the fields before you can create a book", preferredStyle: .alert)
     
     
     
@@ -45,7 +46,8 @@ class NewBookViewController: UIViewController {
         //titleTxt.becomeFirstResponder()
         
         //alert msg initialized
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+        missingAlert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
 
         // Do any additional setup after loading the view.
     }
@@ -93,13 +95,18 @@ class NewBookViewController: UIViewController {
             let user = auth.currentUser
             let userId = user?.uid
             
+            guard let title = titleTxt.text, !title.isEmpty, let firstName = authorFirstTxt.text, !firstName.isEmpty,let lastName = authorLastTxt.text, !lastName.isEmpty  else{
+                self.present(self.missingAlert, animated: true)
+                return
+                
+            }
             
             //TODO ändra om så använder Book klassen
             let newBook : Dictionary<String, Any> = [
                 "userId" : userId,
-                "title" : titleTxt.text,
-                "authorFirstName" : authorFirstTxt.text,
-                "authorLastName" : authorLastTxt.text,
+                "title" : title,
+                "authorFirstName" : firstName,
+                "authorLastName" : lastName,
                 "genre": genreChoosen,
                 "meetingAdress": "Stockholm",
                 "description": descriptionTxtBox.text,
@@ -152,9 +159,7 @@ class NewBookViewController: UIViewController {
 
 
         } else {
-            // No user is signed in.
-            // ...
-            //TODO POPUP?
+            // No user is logged in
         }
 
         
@@ -163,15 +168,6 @@ class NewBookViewController: UIViewController {
         
         
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
