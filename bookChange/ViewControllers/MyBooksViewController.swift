@@ -18,6 +18,8 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
     var books = [Book]()
     var db : Firestore!
     var auth : Auth!
+    var listener : ListenerRegistration?
+    
     var userId: String!
     var orderBy: String!
     //var fBRef : CollectionReference//()//
@@ -212,8 +214,8 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
             let fBRef = db.collection("books").whereField("userId", isEqualTo: self.userId).order(by: self.orderBy, descending: false)
             
             
-            //TODO STOP listener när ueryn ädras och gör ny, i mybooksSegmentchanged?
-            fBRef.addSnapshotListener() {
+            //listener när queryn ädras och gör ny, i mybooksSegmentchanged
+            listener = fBRef.addSnapshotListener() {
                 (snapshot, error) in
                 
                 var newBooks = [Book]()
@@ -240,6 +242,8 @@ class MyBooksViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         
         //TODO kan göra detta med sort på arreyen här istället?
+        
+        listener?.remove()
         
         switch myBooksSegmentCtrl.selectedSegmentIndex {
         case 0:

@@ -52,7 +52,8 @@ class OffersBidsViewCell: UICollectionViewCell {
 
         db = Firestore.firestore()
         let user = Auth.auth().currentUser
-        let cUserId = user?.uid
+        //let cUserId = user?.uid
+        guard let cUserId = user?.uid else {return}
 
        // print(bookId)
         var bidBook : Book?
@@ -80,59 +81,6 @@ class OffersBidsViewCell: UICollectionViewCell {
 
 //                self.bookTitle = bidBook?.title
 //                self.bookAuthor = bidBook!.authorFirstName + " " + bidBook!.authorLastName
-                
-                //CHANGE BACKGROUND
-                if bidBook?.userId != cUserId {
-                    self.offerView.backgroundColor = UIColor.white
-                    self.bidView.backgroundColor = #colorLiteral(red: 0.9931535125, green: 1, blue: 0.8774371147, alpha: 1)
-                    self.bidLabel.text = "bid made"
-                    self.offerLabel.text = "my offer"
-                    self.acceptBtn.isHidden = true
-                    if bid.status == "accepted" {
-                        self.declineBtn.setTitle("accepted email", for: .normal)
-                        self.declineBtn.backgroundColor = .darkGray
-                        self.declineBtn.isEnabled = true
-                        
-                        
-                    }else {
-                      self.declineBtn.setTitle("remove bid", for: .normal)
-                        self.declineBtn.backgroundColor = .red
-                        self.declineBtn.isEnabled = true
-                    }
-                    
-                    
-                    self.declineBtn.isHidden = false
-                    
-                    
-                    
-                } else{
-                    self.offerView.backgroundColor = #colorLiteral(red: 0.9931535125, green: 1, blue: 0.8774371147, alpha: 1)
-                    self.bidView.backgroundColor = UIColor.white
-                    self.bidLabel.text = "my book"
-                    self.offerLabel.text = "offer recieved"
-                    self.acceptBtn.setTitle("accept", for: .normal)
-                    
-                    if bid.status == "accepted" {
-                        self.declineBtn.setTitle("bid accepted", for: .normal)
-                        self.declineBtn.backgroundColor = .darkGray
-                        self.declineBtn.isEnabled = false
-                        self.acceptBtn.isEnabled = false
-                        self.acceptBtn.isHidden = true
-
-                        
-                    }else {
-                        self.acceptBtn.isHidden = false
-                        self.declineBtn.setTitle("decline", for: .normal)
-                        self.declineBtn.backgroundColor = .red
-                        self.declineBtn.isEnabled = true
-                        self.acceptBtn.isEnabled = true
-                        self.acceptBtn.isHidden = false
-                        
-
-                    }
-                    self.declineBtn.isHidden = false
-                    
-                }
                 
                 
 
@@ -164,6 +112,59 @@ class OffersBidsViewCell: UICollectionViewCell {
                         print("Did not find offer book")
                     }
 
+                }
+                
+                
+                
+                //CHANGE BACKGROUND
+                if bidBook?.userId != cUserId {
+                    self.offerView.backgroundColor = UIColor.white
+                    self.bidView.backgroundColor = #colorLiteral(red: 0.9931535125, green: 1, blue: 0.8774371147, alpha: 1)
+                    self.bidLabel.text = "bid made"
+                    self.offerLabel.text = "my offer"
+                    self.acceptBtn.isHidden = true
+                    if bid.status == "accepted" {
+                        self.declineBtn.setTitle("accepted email", for: .normal)
+                        self.declineBtn.backgroundColor = .darkGray
+                        self.declineBtn.isEnabled = true
+                        
+                        
+                    }else {
+                        self.declineBtn.setTitle("remove bid", for: .normal)
+                        self.declineBtn.backgroundColor = .red
+                        self.declineBtn.isEnabled = true
+                    }
+                    
+                    
+                    self.declineBtn.isHidden = false
+                    
+                    
+                    
+                } else{
+                    self.offerView.backgroundColor = #colorLiteral(red: 0.9931535125, green: 1, blue: 0.8774371147, alpha: 1)
+                    self.bidView.backgroundColor = UIColor.white
+                    self.bidLabel.text = "my book"
+                    self.offerLabel.text = "offer recieved"
+                    self.acceptBtn.setTitle("accept", for: .normal)
+                    
+                    if bid.status != "accepted" {
+                        self.declineBtn.setTitle("decline", for: .normal)
+                        self.declineBtn.backgroundColor = .red
+                        self.declineBtn.isEnabled = true
+                        self.acceptBtn.isEnabled = true
+                        self.acceptBtn.isHidden = false
+
+                        
+                    }else {
+                        self.declineBtn.setTitle("bid accepted", for: .normal)
+                        self.declineBtn.backgroundColor = .darkGray
+                        self.declineBtn.isEnabled = false
+                        self.acceptBtn.isEnabled = false
+                        self.acceptBtn.isHidden = true
+                        
+                    }
+                    self.declineBtn.isHidden = false
+                    
                 }
 
             } else {

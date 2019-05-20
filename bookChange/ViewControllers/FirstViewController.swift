@@ -16,7 +16,8 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     var bidBookInfos = [BidBookInfo]()
     var db : Firestore!
     var auth : Auth!
-    var userId: String!
+    var listener : ListenerRegistration?
+    //var userId: String!
     
     var findByGenre: String!
     var orderBy: String!
@@ -108,6 +109,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                 
                 updateRef.updateData(["status" : status])
                 print("updated bid with DELETED")
+                //self.offersBidsView.reloadData()
             }
         }
         
@@ -119,9 +121,9 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
         if auth.currentUser != nil {
             
             let user = auth.currentUser
-            let cUserId = user?.uid
+            guard let cUserId = user?.uid else {return}
             
-            print("user id \(userId)")
+            print("user id \(cUserId)")
             
              //TODO SHOWS MY BIDS SO FAR UNder
             //let ref = db.collection("bids").whereField("offeredBookUserId", isEqualTo: self.userId)//.order(by: self.orderBy)
@@ -133,7 +135,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
             //TODO Visa decloined men inte deleted?
             //TODO kanske visa ddclined o sen autoremove declined inom 24h?
             
-            bidRef.addSnapshotListener() {
+            listener = bidRef.addSnapshotListener() {
                 (snapShot, error) in
                 
                 
@@ -167,7 +169,7 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
                    // fillBidBookInfo(bid: bid)
                 }
                 
-                print("Hittat böcker till bidinfo")
+                print("Hittat \(newBids.count) böcker till bidinfo")
                 
                 //self.bidBookInfos = newBidInfo
                 
@@ -210,6 +212,10 @@ class FirstViewController: UIViewController, UICollectionViewDelegate, UICollect
     @IBAction func segmentCtrlChanged(_ sender: Any) {
         
         //TODO ändra så det här ändrar hela searchsträngen man slänger in i listenern istället?
+        
+        
+        //REMOVE SNAPSHOTLISTENERN
+        listener?.remove()
         
         //change the searchstring
         switch segmentCtrl.selectedSegmentIndex {
