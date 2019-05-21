@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class NewBookViewController: UIViewController {
+class NewBookViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     
     @IBOutlet weak var titleTxt: UITextField!
@@ -34,6 +34,14 @@ class NewBookViewController: UIViewController {
         super.viewDidLoad()
         
         auth = Auth.auth()
+        
+        self.titleTxt.delegate = self
+        self.authorFirstTxt.delegate = self
+        self.authorLastTxt.delegate = self
+        self.descriptionTxtBox.delegate = self
+        
+        
+         //self.tableView.keyboardDismissMode = .onDrag
         
         //how i want the date formatted
         format.dateFormat = "yyy-MM-dd HH:mm"
@@ -168,6 +176,19 @@ class NewBookViewController: UIViewController {
         
         
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        //textField.resignFirstResponder()
+        
+        return false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+
 
 }
 

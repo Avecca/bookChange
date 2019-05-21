@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var userNameTxtField: UITextField!
     @IBOutlet weak var emailTxtField: UITextField!
@@ -35,9 +35,13 @@ class LogInViewController: UIViewController {
          db = Firestore.firestore()
          format.dateFormat = "yyy-MM-dd HH:mm"
         
+        self.emailTxtField.delegate = self
+        self.passwordTxtField.delegate = self
+        
         
         //Email is firstrespeonder when opening app
          emailTxtField.becomeFirstResponder()
+        
         
         //IF autologged in from previous session, do this in viewdid appear
 
@@ -67,6 +71,10 @@ class LogInViewController: UIViewController {
             textField.placeholder = "Enter your username"
         }
         alert.addAction(alertActionOkBtn)
+        
+        
+        
+     
         
 
         
@@ -218,6 +226,15 @@ class LogInViewController: UIViewController {
 //            }
         
         //}
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        
+        return false
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     
