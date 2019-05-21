@@ -40,8 +40,10 @@ class FindBooksCollectionViewCell: UICollectionViewCell {
                 
                 if usr == book.userId {
                     bidBookBtn.isHidden = true
+                    backgroundColor = .white
                 }else {
                     bidBookBtn.isHidden = false
+                    backgroundColor = #colorLiteral(red: 0.9931535125, green: 1, blue: 0.8774371147, alpha: 1)
                 }
                 
             }
