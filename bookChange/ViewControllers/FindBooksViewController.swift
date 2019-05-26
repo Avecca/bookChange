@@ -34,7 +34,7 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
     var bookId : String = "" // books[index].bookId
     var bookOwnerId : String = "" // books[index].userId
     
-    
+    let alert = UIAlertController(title: "no books found", message: "add books to your library 'myBooks' so you have a book to trade with", preferredStyle: .alert)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +54,11 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         bookPicker.delegate = self
         bookPicker.dataSource = self
         
+        
+        
+        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+        
 
-       // bookPicker.selectRow(defaultPV, inComponent: 0, animated: false)
         
         
     }
@@ -75,8 +78,18 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         
         bookId = books[index].bookId
         bookOwnerId = books[index].userId
-        popUpView.isHidden = false
-        offerLbl.isEnabled = true
+        
+        if bookPickerData.count > 0 {
+            print("FINDING BOOKS TO TRADE!!  \(bookPickerData.count)")
+            let defaultPV = bookPickerData.count / 2
+            bookPicker.selectRow(defaultPV, inComponent: 0, animated: true)
+            popUpView.isHidden = false
+            offerLbl.isEnabled = true
+        } else {
+            
+            self.present(self.alert, animated: true)
+        
+        }
         
         //self.present(self.alert,animated: true)
         
@@ -330,19 +343,28 @@ class FindBooksViewController: UIViewController, UICollectionViewDelegate, UICol
         return bookPickerData.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let pickerLbl = UILabel()
-        pickerLbl.textAlignment = .left
-        pickerLbl.textColor = .black
-        pickerLbl.text = bookPickerData[row].title
-        return pickerLbl
-    }
-    
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//
-//
-//        //return bookPickerData[row].title
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//        let pickerLbl = UILabel()
+//        pickerLbl.textAlignment = .left
+//        pickerLbl.textColor = .black
+//        pickerLbl.text = bookPickerData[row].title
+//        return pickerLbl
 //    }
+    
+//    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+//        let pickerLbl = UILabel()
+//        pickerLbl.textAlignment = .center
+//        pickerLbl.textColor = .black
+//        pickerLbl.text = bookPickerData[row].title
+//        //NSAttributedString(string: bookPickerData[row].title, attributes: [NSForegroundColorAttributeName:UIColor.black])
+//        return  NSAttributedString(string: bookPickerData[row].title, attributes: [NSAttributedString.Key.foregroundColor:UIColor.black])
+//    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+
+
+        return bookPickerData[row].title
+    }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         print("SELECTED ROW:  \(row)")
